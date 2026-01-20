@@ -34,12 +34,12 @@
             label4 = new Label();
             label5 = new Label();
             label6 = new Label();
-            label7 = new Label();
-            label8 = new Label();
-            label9 = new Label();
-            label10 = new Label();
-            label11 = new Label();
-            label12 = new Label();
+            seatDepthSLimitLabel = new Label();
+            footrestDiameterD2LimitLabel = new Label();
+            legDiameterD1LimitLabel = new Label();
+            seatDiameterDLimitLabel = new Label();
+            footrestHeightH1LimitLabel = new Label();
+            stoolHeightHLimitLabel = new Label();
             pictureBox1 = new PictureBox();
             BuildButton = new Button();
             groupBox1 = new GroupBox();
@@ -50,6 +50,9 @@
             seatDiameterDTextBox = new TextBox();
             seatDepthSTextBox = new TextBox();
             footrestDiameterD2TextBox = new TextBox();
+            label13 = new Label();
+            legCountCTextBox = new TextBox();
+            legCountCLimitLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             SuspendLayout();
@@ -108,59 +111,59 @@
             label6.TabIndex = 4;
             label6.Text = "Диаметр подножки d2:";
             // 
-            // label7
+            // seatDepthSLimitLabel
             // 
-            label7.AutoSize = true;
-            label7.Location = new Point(278, 174);
-            label7.Name = "label7";
-            label7.Size = new Size(119, 20);
-            label7.TabIndex = 17;
-            label7.Text = "от 20 до 100 мм";
+            seatDepthSLimitLabel.AutoSize = true;
+            seatDepthSLimitLabel.Location = new Point(278, 174);
+            seatDepthSLimitLabel.Name = "seatDepthSLimitLabel";
+            seatDepthSLimitLabel.Size = new Size(119, 20);
+            seatDepthSLimitLabel.TabIndex = 17;
+            seatDepthSLimitLabel.Text = "от 20 до 100 мм";
             // 
-            // label8
+            // footrestDiameterD2LimitLabel
             // 
-            label8.AutoSize = true;
-            label8.Location = new Point(278, 141);
-            label8.Name = "label8";
-            label8.Size = new Size(111, 20);
-            label8.TabIndex = 16;
-            label8.Text = "от 10 до 50 мм";
+            footrestDiameterD2LimitLabel.AutoSize = true;
+            footrestDiameterD2LimitLabel.Location = new Point(278, 141);
+            footrestDiameterD2LimitLabel.Name = "footrestDiameterD2LimitLabel";
+            footrestDiameterD2LimitLabel.Size = new Size(111, 20);
+            footrestDiameterD2LimitLabel.TabIndex = 16;
+            footrestDiameterD2LimitLabel.Text = "от 10 до 50 мм";
             // 
-            // label9
+            // legDiameterD1LimitLabel
             // 
-            label9.AutoSize = true;
-            label9.Location = new Point(278, 108);
-            label9.Name = "label9";
-            label9.Size = new Size(111, 20);
-            label9.TabIndex = 15;
-            label9.Text = "от 25 до 70 мм";
+            legDiameterD1LimitLabel.AutoSize = true;
+            legDiameterD1LimitLabel.Location = new Point(278, 108);
+            legDiameterD1LimitLabel.Name = "legDiameterD1LimitLabel";
+            legDiameterD1LimitLabel.Size = new Size(111, 20);
+            legDiameterD1LimitLabel.TabIndex = 15;
+            legDiameterD1LimitLabel.Text = "от 25 до 70 мм";
             // 
-            // label10
+            // seatDiameterDLimitLabel
             // 
-            label10.AutoSize = true;
-            label10.Location = new Point(278, 75);
-            label10.Name = "label10";
-            label10.Size = new Size(127, 20);
-            label10.TabIndex = 14;
-            label10.Text = "от 300 до 500 мм";
+            seatDiameterDLimitLabel.AutoSize = true;
+            seatDiameterDLimitLabel.Location = new Point(278, 75);
+            seatDiameterDLimitLabel.Name = "seatDiameterDLimitLabel";
+            seatDiameterDLimitLabel.Size = new Size(127, 20);
+            seatDiameterDLimitLabel.TabIndex = 14;
+            seatDiameterDLimitLabel.Text = "от 300 до 500 мм";
             // 
-            // label11
+            // footrestHeightH1LimitLabel
             // 
-            label11.AutoSize = true;
-            label11.Location = new Point(278, 42);
-            label11.Name = "label11";
-            label11.Size = new Size(127, 20);
-            label11.TabIndex = 13;
-            label11.Text = "от 200 до 400 мм";
+            footrestHeightH1LimitLabel.AutoSize = true;
+            footrestHeightH1LimitLabel.Location = new Point(278, 42);
+            footrestHeightH1LimitLabel.Name = "footrestHeightH1LimitLabel";
+            footrestHeightH1LimitLabel.Size = new Size(127, 20);
+            footrestHeightH1LimitLabel.TabIndex = 13;
+            footrestHeightH1LimitLabel.Text = "от 200 до 400 мм";
             // 
-            // label12
+            // stoolHeightHLimitLabel
             // 
-            label12.AutoSize = true;
-            label12.Location = new Point(278, 9);
-            label12.Name = "label12";
-            label12.Size = new Size(127, 20);
-            label12.TabIndex = 12;
-            label12.Text = "от 700 до 900 мм";
+            stoolHeightHLimitLabel.AutoSize = true;
+            stoolHeightHLimitLabel.Location = new Point(278, 9);
+            stoolHeightHLimitLabel.Name = "stoolHeightHLimitLabel";
+            stoolHeightHLimitLabel.Size = new Size(127, 20);
+            stoolHeightHLimitLabel.TabIndex = 12;
+            stoolHeightHLimitLabel.Text = "от 700 до 900 мм";
             // 
             // pictureBox1
             // 
@@ -185,9 +188,9 @@
             // 
             groupBox1.Controls.Add(richTextBox);
             groupBox1.Dock = DockStyle.Bottom;
-            groupBox1.Location = new Point(0, 331);
+            groupBox1.Location = new Point(0, 336);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(628, 90);
+            groupBox1.Size = new Size(628, 112);
             groupBox1.TabIndex = 20;
             groupBox1.TabStop = false;
             groupBox1.Text = "Строка состояния";
@@ -200,7 +203,7 @@
             richTextBox.Location = new Point(3, 23);
             richTextBox.Name = "richTextBox";
             richTextBox.ReadOnly = true;
-            richTextBox.Size = new Size(622, 64);
+            richTextBox.Size = new Size(622, 86);
             richTextBox.TabIndex = 0;
             richTextBox.Text = "";
             // 
@@ -210,7 +213,6 @@
             stoolHeightHTextBox.Name = "stoolHeightHTextBox";
             stoolHeightHTextBox.Size = new Size(85, 27);
             stoolHeightHTextBox.TabIndex = 21;
-            stoolHeightHTextBox.Text = "700";
             // 
             // footrestHeightH1TextBox
             // 
@@ -218,7 +220,6 @@
             footrestHeightH1TextBox.Name = "footrestHeightH1TextBox";
             footrestHeightH1TextBox.Size = new Size(85, 27);
             footrestHeightH1TextBox.TabIndex = 22;
-            footrestHeightH1TextBox.Text = "200";
             // 
             // legDiameterD1TextBox
             // 
@@ -227,7 +228,6 @@
             legDiameterD1TextBox.Name = "legDiameterD1TextBox";
             legDiameterD1TextBox.Size = new Size(85, 27);
             legDiameterD1TextBox.TabIndex = 24;
-            legDiameterD1TextBox.Text = "25";
             // 
             // seatDiameterDTextBox
             // 
@@ -235,7 +235,6 @@
             seatDiameterDTextBox.Name = "seatDiameterDTextBox";
             seatDiameterDTextBox.Size = new Size(85, 27);
             seatDiameterDTextBox.TabIndex = 23;
-            seatDiameterDTextBox.Text = "300";
             // 
             // seatDepthSTextBox
             // 
@@ -243,7 +242,6 @@
             seatDepthSTextBox.Name = "seatDepthSTextBox";
             seatDepthSTextBox.Size = new Size(85, 27);
             seatDepthSTextBox.TabIndex = 26;
-            seatDepthSTextBox.Text = "20";
             // 
             // footrestDiameterD2TextBox
             // 
@@ -252,13 +250,40 @@
             footrestDiameterD2TextBox.Name = "footrestDiameterD2TextBox";
             footrestDiameterD2TextBox.Size = new Size(85, 27);
             footrestDiameterD2TextBox.TabIndex = 25;
-            footrestDiameterD2TextBox.Text = "10";
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new Point(12, 210);
+            label13.Name = "label13";
+            label13.Size = new Size(154, 20);
+            label13.TabIndex = 27;
+            label13.Text = "Количество ножек C:";
+            // 
+            // legCountCTextBox
+            // 
+            legCountCTextBox.Location = new Point(187, 207);
+            legCountCTextBox.Name = "legCountCTextBox";
+            legCountCTextBox.Size = new Size(85, 27);
+            legCountCTextBox.TabIndex = 28;
+            // 
+            // legCountCLimitLabel
+            // 
+            legCountCLimitLabel.AutoSize = true;
+            legCountCLimitLabel.Location = new Point(278, 210);
+            legCountCLimitLabel.Name = "legCountCLimitLabel";
+            legCountCLimitLabel.Size = new Size(91, 20);
+            legCountCLimitLabel.TabIndex = 29;
+            legCountCLimitLabel.Text = "от 3 до 6 шт";
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(628, 421);
+            ClientSize = new Size(628, 448);
+            Controls.Add(legCountCLimitLabel);
+            Controls.Add(legCountCTextBox);
+            Controls.Add(label13);
             Controls.Add(seatDepthSTextBox);
             Controls.Add(footrestDiameterD2TextBox);
             Controls.Add(legDiameterD1TextBox);
@@ -268,12 +293,12 @@
             Controls.Add(groupBox1);
             Controls.Add(BuildButton);
             Controls.Add(pictureBox1);
-            Controls.Add(label7);
-            Controls.Add(label8);
-            Controls.Add(label9);
-            Controls.Add(label10);
-            Controls.Add(label11);
-            Controls.Add(label12);
+            Controls.Add(seatDepthSLimitLabel);
+            Controls.Add(footrestDiameterD2LimitLabel);
+            Controls.Add(legDiameterD1LimitLabel);
+            Controls.Add(seatDiameterDLimitLabel);
+            Controls.Add(footrestHeightH1LimitLabel);
+            Controls.Add(stoolHeightHLimitLabel);
             Controls.Add(label5);
             Controls.Add(label6);
             Controls.Add(label3);
@@ -296,12 +321,12 @@
         private Label label4;
         private Label label5;
         private Label label6;
-        private Label label7;
-        private Label label8;
-        private Label label9;
-        private Label label10;
-        private Label label11;
-        private Label label12;
+        private Label seatDepthSLimitLabel;
+        private Label footrestDiameterD2LimitLabel;
+        private Label legDiameterD1LimitLabel;
+        private Label seatDiameterDLimitLabel;
+        private Label footrestHeightH1LimitLabel;
+        private Label stoolHeightHLimitLabel;
         private PictureBox pictureBox1;
         private Button BuildButton;
         private GroupBox groupBox1;
@@ -312,5 +337,8 @@
         private TextBox seatDiameterDTextBox;
         private TextBox seatDepthSTextBox;
         private TextBox footrestDiameterD2TextBox;
+        private Label label13;
+        private TextBox legCountCTextBox;
+        private Label legCountCLimitLabel;
     }
 }

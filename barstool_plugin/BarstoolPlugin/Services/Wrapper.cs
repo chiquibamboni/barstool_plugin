@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-
 using Kompas6API5;
 using Kompas6Constants;
 using Kompas6Constants3D;
@@ -35,30 +34,40 @@ namespace BarstoolPlugin.Services
         private ksDocument2D _current2dDoc;
 
         /// <summary>
-        /// Подключается к запущенному КОМПАС-3D или запускает новый
-        /// процесс.
+        /// Подключается к запущенному КОМПАС-3D или запускает новый процесс.
         /// </summary>
         public void AttachOrRunCAD()
         {
             if (_kompas != null)
             {
-                return;
+                try
+                {
+                    var isVisible = _kompas.Visible;
+                    return;
+                }
+                catch (COMException)
+                {
+                    ReleaseComObject(_kompas);
+                    _kompas = null;
+                }
             }
 
             var t = Type.GetTypeFromProgID("KOMPAS.Application.5");
             if (t == null)
             {
                 throw new InvalidOperationException(
-                    "Не найден ProgID KOMPAS.Application.5");
+                    "Не найден ProgID KOMPAS.Application.5. " +
+                    "Убедитесь, что КОМПАС-3D установлен.");
             }
 
             _kompas = (KompasObject)Activator.CreateInstance(t)
-                      ?? throw new InvalidOperationException(
-                          "Не удалось создать KompasObject.");
+                ?? throw new InvalidOperationException(
+                    "Не удалось создать KompasObject.");
 
             _kompas.Visible = true;
             _kompas.ActivateControllerAPI();
         }
+
 
         /// <summary>
         /// Создаёт новый 3D-документ (деталь) и получает верхнюю деталь.
@@ -68,32 +77,31 @@ namespace BarstoolPlugin.Services
             if (_kompas == null)
             {
                 throw new InvalidOperationException(
-                    "Kompas не инициализирован. Сначала вызови " +
-                    "AttachOrRunCAD().");
+                    "Kompas не инициализирован. Сначала вызови "
+                    + "AttachOrRunCAD().");
             }
 
             _doc3D = (ksDocument3D)_kompas.Document3D()
-                     ?? throw new InvalidOperationException(
-                         "Не удалось получить ksDocument3D.");
-
+                ?? throw new InvalidOperationException(
+                    "Не удалось получить ksDocument3D.");
             _doc3D.Create();
 
             _part = (ksPart)_doc3D.GetPart((short)Part_Type.pTop_Part)
-                       ?? throw new InvalidOperationException(
-                           "Не удалось получить верхнюю деталь.");
+                ?? throw new InvalidOperationException(
+                    "Не удалось получить верхнюю деталь.");
         }
 
         /// <summary>
         /// Создаёт эскиз на базовой плоскости ("XOY", "XOZ", "YOZ").
-        /// Возвращает объект эскиза.
         /// </summary>
+        /// <param name="plane">Название базовой плоскости: "XOY"/"XY",
+        /// "XOZ"/"XZ", "YOZ"/"YZ"</param>
         public object CreateSketchOnPlane(string plane)
         {
             if (_part == null)
             {
                 throw new InvalidOperationException(
-                    "Часть не инициализирована. Вызови " +
-                    "CreateDocument3D().");
+                    "Часть не инициализирована. Вызови CreateDocument3D().");
             }
 
             short planeType = plane?.ToUpperInvariant() switch
@@ -105,14 +113,13 @@ namespace BarstoolPlugin.Services
             };
 
             var basePlane = (ksEntity)_part.GetDefaultEntity(planeType)
-                           ?? throw new InvalidOperationException(
-                               "Не удалось получить базовую плоскость.");
+                ?? throw new InvalidOperationException(
+                    "Не удалось получить базовую плоскость.");
 
             var sketchEntity = (ksEntity)_part
-                                .NewEntity((short)Obj3dType.o3d_sketch)
-                               ?? throw new InvalidOperationException(
-                                   "Не удалось создать сущность " +
-                                   "o3d_sketch.");
+                .NewEntity((short)Obj3dType.o3d_sketch)
+                ?? throw new InvalidOperationException(
+                    "Не удалось создать сущность o3d_sketch.");
 
             var sketchDef =
                 (ksSketchDefinition)sketchEntity.GetDefinition();
@@ -120,28 +127,65 @@ namespace BarstoolPlugin.Services
             sketchEntity.Create();
 
             _current2dDoc = (ksDocument2D)sketchDef.BeginEdit();
-
             return sketchEntity;
         }
 
         /// <summary>
         /// Рисует окружность на активном эскизе.
         /// </summary>
+        /// <param name="xc">X-координата центра окружности</param>
+        /// <param name="yc">Y-координата центра окружности</param>
+        /// <param name="radius">Радиус окружности</param>
         public void DrawCircle(double xc, double yc, double radius)
         {
             if (_current2dDoc == null)
             {
                 throw new InvalidOperationException(
-                    "Нет активного 2D-эскиза. Сначала вызови " +
-                    "CreateSketchOnPlane().");
+                    "Нет активного 2D-эскиза. Сначала вызови "
+                    + "CreateSketchOnPlane().");
+            }
+            _current2dDoc.ksCircle(xc, yc, radius, 1);
+        }
+
+        /// <summary>
+        /// Создает эскиз на указанной плоскости.
+        /// </summary>
+        /// <param name="planeEntity">Объект плоскости (ksEntity),
+        /// на которой создается эскиз</param>
+        /// <returns>Объект эскиза (ksEntity)</returns>
+        public object CreateSketchOnPlaneEntity(object planeEntity)
+        {
+            if (_part == null)
+            {
+                throw new InvalidOperationException(
+                    "Часть не инициализирована.");
             }
 
-            _current2dDoc.ksCircle(xc, yc, radius, 1);
+            if (planeEntity is not ksEntity ksPlaneEntity)
+            {
+                throw new ArgumentException(
+                    "Ожидался объект плоскости (ksEntity).",
+                    nameof(planeEntity));
+            }
+
+            var sketchEntity = (ksEntity)_part
+                .NewEntity((short)Obj3dType.o3d_sketch)
+                ?? throw new InvalidOperationException(
+                    "Не удалось создать сущность эскиза.");
+
+            var sketchDef = (ksSketchDefinition)sketchEntity.GetDefinition();
+            sketchDef.SetPlane(ksPlaneEntity);
+            sketchEntity.Create();
+
+            _current2dDoc = (ksDocument2D)sketchDef.BeginEdit();
+            return sketchEntity;
         }
 
         /// <summary>
         /// Завершает редактирование эскиза.
         /// </summary>
+        /// <param name="sketch">Объект эскиза (ksEntity),
+        /// редактирование которого завершается</param>
         public void FinishSketch(object sketch)
         {
             if (sketch is not ksEntity sketchEntity)
@@ -159,21 +203,20 @@ namespace BarstoolPlugin.Services
         /// <summary>
         /// Выполняет операцию выдавливания.
         /// </summary>
-        /// <param name="sketch">Эскиз для выдавливания.</param>
-        /// <param name="height">Высота выдавливания (положительное
-        /// значение).</param>
-        /// <param name="direction">true - выдавливание в нормальном
-        /// направлении, false - в обратном</param>
-        /// <param name="symmetric">true - симметричное выдавливание в
-        /// обе стороны</param>
+        /// <param name="sketch">Объект эскиза (ksEntity) для
+        /// выдавливания</param>
+        /// <param name="height">Высота выдавливания</param>
+        /// <param name="direction">Направление выдавливания
+        /// (true - прямое, false - обратное)</param>
+        /// <param name="symmetric">Флаг симметричного выдавливания
+        /// в обе стороны</param>
         public void Extrude(object sketch, double height,
             bool direction = true, bool symmetric = false)
         {
             if (_part == null)
             {
                 throw new InvalidOperationException(
-                    "Часть не инициализирована. Вызови " +
-                    "CreateDocument3D().");
+                    "Часть не инициализирована. Вызови CreateDocument3D().");
             }
 
             if (sketch is not ksEntity sketchEntity)
@@ -184,9 +227,8 @@ namespace BarstoolPlugin.Services
 
             ksEntity extr = _part
                 .NewEntity((short)Obj3dType.o3d_baseExtrusion)
-                           ?? throw new InvalidOperationException(
-                               "Не удалось создать сущность " +
-                               "o3d_baseExtrusion.");
+                ?? throw new InvalidOperationException(
+                    "Не удалось создать сущность o3d_baseExtrusion.");
 
             ksBaseExtrusionDefinition def =
                 (ksBaseExtrusionDefinition)extr.GetDefinition();
@@ -215,13 +257,13 @@ namespace BarstoolPlugin.Services
                 p.typeNormal = (short)End_Type.etBlind;
                 p.depthNormal = height;
             }
-
             extr.Create();
         }
 
         /// <summary>
         /// Сохранение модели на диск.
         /// </summary>
+        /// <param name="path">Полный путь к файлу для сохранения</param>
         public void SaveAs(string path)
         {
             if (_doc3D == null)
@@ -235,48 +277,89 @@ namespace BarstoolPlugin.Services
                 throw new ArgumentException(
                     "Путь к файлу не задан.", nameof(path));
             }
-
             _doc3D.SaveAs(path);
         }
 
         /// <summary>
-        /// Закрывает текущий 3D-документ КОМПАС-3D и освобождает
-        /// COM-ссылки.
-        /// Используется для предотвращения накопления открытых документов
-        /// и утечек памяти.
+        /// Создает смещенную плоскость, параллельную одной из базовых.
         /// </summary>
-        public void CloseActiveDocument()
+        /// <param name="basePlaneType">Тип базовой плоскости</param>
+        /// <param name="offset">Смещение от базовой плоскости</param>
+        /// <returns>Объект смещенной плоскости (ksEntity)</returns>
+        public object CreateOffsetPlane(short basePlaneType, double offset)
         {
-            if (_doc3D == null)
+            if (_part == null)
             {
-                return;
+                throw new InvalidOperationException(
+                    "Часть не инициализирована.");
             }
 
-            try
-            {
-                _doc3D.close();
-            }
-            catch
-            {
-                // Игнорируем
-            }
-            finally
-            {
-                // Освобождаем COM-ссылки
-                ReleaseComObject(_current2dDoc);
-                ReleaseComObject(_part);
-                ReleaseComObject(_doc3D);
+            var basePlane = (ksEntity)_part.GetDefaultEntity(basePlaneType);
+            var offsetPlaneEntity = (ksEntity)_part
+                .NewEntity((short)Obj3dType.o3d_planeOffset);
+            var offsetPlaneDef =
+                (ksPlaneOffsetDefinition)offsetPlaneEntity.GetDefinition();
 
-                _current2dDoc = null;
-                _part = null;
-                _doc3D = null;
+            offsetPlaneDef.SetPlane(basePlane);
+            offsetPlaneDef.offset = offset;
+            offsetPlaneDef.direction = true;
+            offsetPlaneEntity.Create();
+
+            return offsetPlaneEntity;
+        }
+
+        /// <summary>
+        /// Создает элемент по траектории (кинематическая операция).
+        /// </summary>
+        /// <param name="profileSketch">Эскиз сечения</param>
+        /// <param name="trajectorySketch">Эскиз траектории</param>
+        public void CreateElementByTrajectory(object profileSketch,
+            object trajectorySketch)
+        {
+            if (_part == null)
+            {
+                throw new InvalidOperationException(
+                    "Часть не инициализирована.");
             }
+
+            if (profileSketch is not ksEntity profileSketchEntity)
+            {
+                throw new ArgumentException(
+                    "Ожидался эскиз (ksEntity) для сечения.",
+                    nameof(profileSketch));
+            }
+
+            if (trajectorySketch is not ksEntity trajectorySketchEntity)
+            {
+                throw new ArgumentException(
+                    "Ожидался эскиз (ksEntity) для траектории.",
+                    nameof(trajectorySketch));
+            }
+
+            ksEntity kinematicElement = _part
+                .NewEntity((short)Obj3dType.o3d_baseEvolution)
+                ?? throw new InvalidOperationException(
+                    "Не удалось создать сущность o3d_baseEvolution.");
+
+            ksBaseEvolutionDefinition definition =
+                (ksBaseEvolutionDefinition)kinematicElement.GetDefinition();
+            definition.SetSketch(profileSketchEntity);
+
+            ksEntityCollection entityCollection =
+                (ksEntityCollection)definition.PathPartArray()
+                ?? throw new InvalidOperationException(
+                    "Не удалось получить коллекцию траекторий.");
+
+            entityCollection.Clear();
+            entityCollection.Add(trajectorySketchEntity);
+            kinematicElement.Create();
         }
 
         /// <summary>
         /// Безопасно освобождает COM-объект.
         /// </summary>
-        private static void ReleaseComObject(object? comObject)
+        /// <param name="comObject">COM-объект для освобождения</param>
+        private static void ReleaseComObject(object comObject)
         {
             if (comObject == null)
             {
@@ -292,7 +375,7 @@ namespace BarstoolPlugin.Services
             }
             catch
             {
-                // Игнорируем
+                // Игнорируем ошибки освобождения
             }
         }
     }

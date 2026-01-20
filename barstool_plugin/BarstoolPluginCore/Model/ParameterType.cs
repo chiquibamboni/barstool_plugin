@@ -39,6 +39,11 @@ namespace BarstoolPluginCore.Model
         /// <summary>
         /// Вылет сиденья (S)
         /// </summary>
-        SeatDepthS
+        SeatDepthS,
+
+        /// <summary>
+        /// Количество ножек (C)
+        /// </summary>
+        LegCountC
     }
 }

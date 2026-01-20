@@ -10,8 +10,8 @@ namespace BarstoolPluginTests
     public class ValidationErrorTests
     {
         [Test]
-        [Description("Конструктор должен корректно инициализировать все " +
-            "поля")]
+        [Description(
+            "Конструктор должен корректно инициализировать все поля")]
         public void Constructor_ShouldInitializeAllFields()
         {
             var affectedParameters = new List<ParameterType>
@@ -21,8 +21,10 @@ namespace BarstoolPluginTests
             var expectedMessage = "Значение выходит за допустимые пределы";
             var expectedFieldName = "Диаметр ножки";
 
-            var error = new ValidationError(affectedParameters,
-                expectedMessage, expectedFieldName);
+            var error = new ValidationError(
+                affectedParameters,
+                expectedMessage,
+                expectedFieldName);
 
             Assert.Multiple(() =>
             {
@@ -34,8 +36,8 @@ namespace BarstoolPluginTests
         }
 
         [Test]
-        [Description("Свойство AffectedParameters должно возвращать копию " +
-            "списка")]
+        [Description(
+            "Свойство AffectedParameters должно возвращать копию списка")]
         public void AffectedParameters_ShouldReturnCopyOfList()
         {
             var originalList = new List<ParameterType>
@@ -52,12 +54,12 @@ namespace BarstoolPluginTests
         }
 
         [Test]
-        [Description("Свойство Message должно возвращать корректное " +
-            "значение")]
+        [Description(
+            "Свойство Message должно возвращать корректное значение")]
         public void Message_ShouldReturnCorrectValue()
         {
-            var expectedMessage = "Диаметр ножки должен быть меньше " +
-                "диаметра сидения";
+            var expectedMessage =
+                "Диаметр ножки должен быть меньше диаметра сидения";
             var error = new ValidationError(
                 new List<ParameterType> { ParameterType.LegDiameterD1 },
                 expectedMessage);
@@ -68,8 +70,8 @@ namespace BarstoolPluginTests
         }
 
         [Test]
-        [Description("Свойство FieldName должно возвращать корректное " +
-            "значение")]
+        [Description(
+            "Свойство FieldName должно возвращать корректное значение")]
         public void FieldName_ShouldReturnCorrectValue()
         {
             var expectedFieldName = "Высота стула";
@@ -84,57 +86,56 @@ namespace BarstoolPluginTests
         }
 
         [Test]
-        [Description("Конструктор должен выбрасывать исключение при пустом " 
+        [Description(
+            "Конструктор должен выбрасывать исключение при пустом "
             + "списке параметров")]
         public void Constructor_ShouldThrowExceptionForEmptyParameterList()
         {
             var emptyList = new List<ParameterType>();
             var message = "Тестовое сообщение";
+            var expectedError = "Список параметров не может быть пустым";
 
             Assert.That(() => new ValidationError(emptyList, message),
                 Throws.InstanceOf<ArgumentException>()
-                    .With.Message.Contains("Список параметров не может " +
-                    "быть пустым"));
+                    .With.Message.Contains(expectedError));
         }
 
         [Test]
-        [Description("Конструктор должен выбрасывать исключение при null " +
-            "списке параметров")]
+        [Description(
+            "Конструктор должен выбрасывать исключение при null "
+            + "списке параметров")]
         public void Constructor_ShouldThrowExceptionForNullParameterList()
         {
             List<ParameterType> nullList = null;
             var message = "Тестовое сообщение";
+            var expectedError = "Список параметров не может быть пустым";
 
             Assert.That(() => new ValidationError(nullList, message),
                 Throws.InstanceOf<ArgumentException>()
-                    .With.Message.Contains("Список параметров не может " +
-                    "быть пустым"));
+                    .With.Message.Contains(expectedError));
         }
 
         [Test]
-        [Description("Конструктор должен выбрасывать исключение при пустом " +
-            "сообщении")]
+        [Description(
+            "Конструктор должен выбрасывать исключение при пустом "
+            + "сообщении")]
         public void Constructor_ShouldThrowExceptionForEmptyMessage()
         {
             var affectedParameters = new List<ParameterType>
             {
                 ParameterType.LegDiameterD1
             };
+            var expectedError = "Сообщение об ошибке не может быть пустым";
 
             Assert.That(() => new ValidationError(affectedParameters, ""),
                 Throws.InstanceOf<ArgumentException>()
-                    .With.Message.Contains("Сообщение об ошибке не может " +
-                    "быть пустым"));
-
+                    .With.Message.Contains(expectedError));
             Assert.That(() => new ValidationError(affectedParameters, "   "),
                 Throws.InstanceOf<ArgumentException>()
-                    .With.Message.Contains("Сообщение об ошибке не может " +
-                    "быть пустым"));
-
+                    .With.Message.Contains(expectedError));
             Assert.That(() => new ValidationError(affectedParameters, null),
                 Throws.InstanceOf<ArgumentException>()
-                    .With.Message.Contains("Сообщение об ошибке не может " +
-                    "быть пустым"));
+                    .With.Message.Contains(expectedError));
         }
 
         [Test]
@@ -145,8 +146,8 @@ namespace BarstoolPluginTests
 
             foreach (ParameterType parameterType in allParameterTypes)
             {
-                var affectedParameters = new List<ParameterType> { parameterType };
-                var error = new ValidationError(affectedParameters,
+                var affectedParams = new List<ParameterType> { parameterType };
+                var error = new ValidationError(affectedParams,
                     $"Error for {parameterType}");
 
                 Assert.Multiple(() =>
@@ -162,8 +163,8 @@ namespace BarstoolPluginTests
         }
 
         [Test]
-        [Description("Две ошибки с разными параметрами должны корректно " +
-            "работать")]
+        [Description(
+            "Две ошибки с разными параметрами должны корректно работать")]
         public void TwoErrors_WithDifferentParameters_ShouldWorkCorrectly()
         {
             var error1 = new ValidationError(
@@ -198,6 +199,7 @@ namespace BarstoolPluginTests
                 Assert.That(() => error.FieldName, Throws.Nothing);
 
                 var affectedParams = error.AffectedParameters;
+
                 Assert.That(affectedParams,
                     Is.InstanceOf<List<ParameterType>>());
             });
