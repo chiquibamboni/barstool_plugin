@@ -52,6 +52,7 @@ namespace BarstoolPlugin.Services
                 }
             }
 
+            //TODO: RSDN
             var t = Type.GetTypeFromProgID("KOMPAS.Application.5");
             if (t == null)
             {
@@ -375,6 +376,7 @@ namespace BarstoolPlugin.Services
             }
             catch
             {
+                //TODO: ??
                 // Игнорируем ошибки освобождения
             }
         }

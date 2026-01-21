@@ -8,8 +8,13 @@ namespace BarstoolPluginCore.Model
     /// </summary>
     public class ValidationError
     {
+        //TODO: XML
         private List<ParameterType> _affectedParameters;
+
+        //TODO: XML
         private string _message;
+
+        //TODO: XML
         private string _fieldName;
 
         /// <summary>

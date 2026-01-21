@@ -62,6 +62,7 @@ namespace BarstoolPluginCore.Model
         public int MinValue
         {
             get => _minValue;
+            //TODO: validation
             set => _minValue = value;
         }
 
@@ -71,6 +72,8 @@ namespace BarstoolPluginCore.Model
         public int MaxValue
         {
             get => _maxValue;
+            //TODO: validation
+
             set => _maxValue = value;
         }
 

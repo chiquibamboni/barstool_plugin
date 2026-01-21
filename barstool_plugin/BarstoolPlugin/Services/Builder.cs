@@ -6,6 +6,7 @@ using System.IO;
 
 namespace BarstoolPlugin.Services
 {
+    //TODO: refactor
     /// <summary>
     /// Строит 3D-модель барного стула в КОМПАС-3D.
     /// </summary>

@@ -94,14 +94,10 @@ namespace BarstoolPlugin
             textBox.Tag = paramName;
             textBox.Text = defaultValue.ToString();
 
-            if (limitLabel.Name == "legCountCLimitLabel")
-            {
-                limitLabel.Text = $"от {minValue} до {maxValue} шт";
-            }
-            else
-            {
-                limitLabel.Text = $"от {minValue} до {maxValue} мм";
-            }
+            
+            limitLabel.Text = $"от {minValue} до {maxValue} " +
+                //TODO: refactor
+                limitLabel.Name == "legCountCLimitLabel" ? "шт" : "мм";
         }
 
         /// <summary>
