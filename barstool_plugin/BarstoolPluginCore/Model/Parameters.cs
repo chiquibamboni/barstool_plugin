@@ -12,12 +12,12 @@ namespace BarstoolPluginCore.Model
         /// <summary>
         /// Коллекция параметров модели, индексируемая по типу параметра.
         /// </summary>
-        private readonly Dictionary<ParameterType, Parameter> _parameters;
+        private Dictionary<ParameterType, Parameter> _parameters;
 
         /// <summary>
         /// Коллектор ошибок валидации.
         /// </summary>
-        private readonly List<ValidationError> _errorCollector;
+        private List<ValidationError> _errorCollector;
 
         /// <summary>
         /// Инициализирует новый экземпляр класса Parameters с параметрами
@@ -175,7 +175,7 @@ namespace BarstoolPluginCore.Model
             }
             return string.Join("\n", messages);
         }
-
+        
         /// <summary>
         /// Проверяет зависимости между параметрами.
         /// </summary>

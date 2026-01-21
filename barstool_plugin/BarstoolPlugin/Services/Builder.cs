@@ -14,7 +14,7 @@ namespace BarstoolPlugin.Services
         /// <summary>
         /// Обертка для работы с API КОМПАС-3D.
         /// </summary>
-        private readonly Wrapper _wrapper;
+        private Wrapper _wrapper;
 
         /// <summary>
         /// Инициализирует новый экземпляр класса.

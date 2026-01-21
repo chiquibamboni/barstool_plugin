@@ -13,19 +13,19 @@ namespace BarstoolPlugin
     public partial class MainForm : Form
     {
         /// <summary>
-        /// Построитель 3D-модели.
+        /// Объект 3D-модели.
         /// </summary>
-        private readonly Builder _builder;
+        private Builder _builder;
 
         /// <summary>
         /// Параметры модели.
         /// </summary>
-        private readonly Parameters _parameters;
+        private Parameters _parameters;
 
         /// <summary>
         /// Словарь для связи TextBox с ParameterType.
         /// </summary>
-        private readonly Dictionary<TextBox, ParameterType> _textBoxMappings;
+        private Dictionary<TextBox, ParameterType> _textBoxMappings;
 
         /// <summary>
         /// Конструктор формы.

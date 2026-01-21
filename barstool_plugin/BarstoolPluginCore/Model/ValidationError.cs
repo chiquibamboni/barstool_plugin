@@ -8,9 +8,9 @@ namespace BarstoolPluginCore.Model
     /// </summary>
     public class ValidationError
     {
-        private readonly List<ParameterType> _affectedParameters;
-        private readonly string _message;
-        private readonly string _fieldName;
+        private List<ParameterType> _affectedParameters;
+        private string _message;
+        private string _fieldName;
 
         /// <summary>
         /// Инициализирует новый экземпляр класса ValidationError.
