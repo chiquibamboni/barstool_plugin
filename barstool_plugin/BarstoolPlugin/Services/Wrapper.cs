@@ -1,8 +1,9 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Kompas6API5;
+﻿using Kompas6API5;
 using Kompas6Constants;
 using Kompas6Constants3D;
+using System;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace BarstoolPlugin.Services
 {
@@ -52,16 +53,16 @@ namespace BarstoolPlugin.Services
                 }
             }
 
-            //TODO: RSDN
-            var t = Type.GetTypeFromProgID("KOMPAS.Application.5");
-            if (t == null)
+            //TODO: RSDN +
+            var kompasType = Type.GetTypeFromProgID("KOMPAS.Application.5");
+            if (kompasType == null)
             {
                 throw new InvalidOperationException(
                     "Не найден ProgID KOMPAS.Application.5. " +
                     "Убедитесь, что КОМПАС-3D установлен.");
             }
 
-            _kompas = (KompasObject)Activator.CreateInstance(t)
+            _kompas = (KompasObject)Activator.CreateInstance(kompasType)
                 ?? throw new InvalidOperationException(
                     "Не удалось создать KompasObject.");
 
@@ -374,10 +375,14 @@ namespace BarstoolPlugin.Services
                     Marshal.FinalReleaseComObject(comObject);
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                //TODO: ??
-                // Игнорируем ошибки освобождения
+                //TODO: ?? +
+                MessageBox.Show(
+                    $"Ошибка при освобождении COM-объекта: {ex.Message}",
+                    "Ошибка освобождения ресурсов",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
         }
     }

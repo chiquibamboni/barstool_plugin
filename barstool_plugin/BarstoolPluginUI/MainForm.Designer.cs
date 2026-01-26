@@ -166,8 +166,8 @@
             stoolHeightHLimitLabel.Text = "от 700 до 900 мм";
             // 
             // pictureBox1
-            // '
-            pictureBox1.Image = BarstoolPluginUI.Properties.Resources.Чертеж_барный_стул;
+            // 
+            pictureBox1.Image = Properties.Resources.Чертеж_барный_стул;
             pictureBox1.Location = new Point(411, 12);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(203, 318);
@@ -305,6 +305,8 @@
             Controls.Add(label4);
             Controls.Add(label2);
             Controls.Add(label1);
+            MaximumSize = new Size(646, 495);
+            MinimumSize = new Size(646, 495);
             Name = "MainForm";
             Text = "Барный стул";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
