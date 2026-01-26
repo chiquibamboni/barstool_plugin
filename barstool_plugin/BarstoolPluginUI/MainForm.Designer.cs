@@ -1,4 +1,4 @@
-﻿namespace BarstoolPlugin
+﻿namespace BarstoolPluginUI
 {
     partial class MainForm
     {
@@ -166,8 +166,8 @@
             stoolHeightHLimitLabel.Text = "от 700 до 900 мм";
             // 
             // pictureBox1
-            // 
-            pictureBox1.Image = Properties.Resources.Чертеж_барный_стул;
+            // '
+            pictureBox1.Image = BarstoolPluginUI.Properties.Resources.Чертеж_барный_стул;
             pictureBox1.Location = new Point(411, 12);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(203, 318);

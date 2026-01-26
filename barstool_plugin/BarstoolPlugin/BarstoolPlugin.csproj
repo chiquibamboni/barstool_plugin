@@ -1,19 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <COMReference Include="Kompas6API5">
+    <COMReference Include="Kompas6Constants3D">
       <WrapperTool>tlbimp</WrapperTool>
       <VersionMinor>0</VersionMinor>
       <VersionMajor>1</VersionMajor>
-      <Guid>0422828c-f174-495e-ac5d-d31014dbbe87</Guid>
+      <Guid>2caf168c-7961-4b90-9da2-701419beefe3</Guid>
       <Lcid>0</Lcid>
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
@@ -27,29 +25,11 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
-    <COMReference Include="Kompas6Constants3D">
+    <COMReference Include="Kompas6API5">
       <WrapperTool>tlbimp</WrapperTool>
       <VersionMinor>0</VersionMinor>
       <VersionMajor>1</VersionMajor>
-      <Guid>2caf168c-7961-4b90-9da2-701419beefe3</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="Kompas6API2D5COM">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>0</VersionMinor>
-      <VersionMajor>1</VersionMajor>
-      <Guid>0f4ab6c5-1420-4848-afce-18cbe701be1a</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="Kompas6API3D5COM">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>0</VersionMinor>
-      <VersionMajor>1</VersionMajor>
-      <Guid>006c01c3-fa63-4f20-b930-cce6dd3a9236</Guid>
+      <Guid>0422828c-f174-495e-ac5d-d31014dbbe87</Guid>
       <Lcid>0</Lcid>
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
@@ -58,21 +38,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BarstoolPluginCore\BarstoolPluginCore.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

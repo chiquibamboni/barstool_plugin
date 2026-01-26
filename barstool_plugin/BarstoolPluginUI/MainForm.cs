@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using BarstoolPlugin.Services;
 using BarstoolPluginCore.Model;
 
-namespace BarstoolPlugin
+namespace BarstoolPluginUI
 {
     /// <summary>
     /// Главная форма плагина для построения барного стула.

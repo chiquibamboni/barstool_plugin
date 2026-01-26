@@ -1,4 +1,4 @@
-﻿namespace BarstoolPlugin
+﻿namespace BarstoolPluginUI
 {
     internal static class Program
     {
