@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Diagnostics;
 using System.IO;
 using Microsoft.VisualBasic.Devices;
@@ -11,7 +11,7 @@ namespace BarstoolStressTesting
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("=== Barstool Plugin Infinite Stress Test ===");
+            Console.WriteLine("== Barstool Plugin Infinite Stress Test ==");
             Console.WriteLine();
 
             Console.WriteLine("Select barstool parameters:");
@@ -38,7 +38,8 @@ namespace BarstoolStressTesting
                     Console.WriteLine("Using maximum parameters");
                     break;
                 default:
-                    Console.WriteLine("Invalid choice! Using average parameters.");
+                    Console.WriteLine("Invalid choice! " +
+                        "Using average parameters.");
                     parameters = GetAverageParameters();
                     break;
             }
@@ -62,25 +63,27 @@ namespace BarstoolStressTesting
             var count = 0;
             var startTime = DateTime.Now;
 
-            // Создаем файл лога
-            var fileName = $"barstool_stress_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+            var fileName = $"barstool_stress_" +
+                $"{DateTime.Now:yyyyMMdd_HHmmss}.txt";
             using var streamWriter = new StreamWriter(fileName);
 
-            // Записываем заголовок
             streamWriter.WriteLine($"Stress Test Started: {DateTime.Now}");
-            streamWriter.WriteLine($"Parameters: D={parameters.GetValue(ParameterType.SeatDiameterD)}, " +
-                                   $"D1={parameters.GetValue(ParameterType.LegDiameterD1)}, " +
-                                   $"D2={parameters.GetValue(ParameterType.FootrestDiameterD2)}, " +
-                                   $"H={parameters.GetValue(ParameterType.StoolHeightH)}, " +
-                                   $"H1={parameters.GetValue(ParameterType.FootrestHeightH1)}, " +
-                                   $"S={parameters.GetValue(ParameterType.SeatDepthS)}, " +
-                                   $"C={parameters.GetValue(ParameterType.LegCountC)}");
+            streamWriter.WriteLine($"Parameters: " +
+                $"D={parameters.GetValue(ParameterType.SeatDiameterD)}, " +
+                $"D1={parameters.GetValue(ParameterType.LegDiameterD1)}, " +
+                $"D2={parameters.GetValue(
+                    ParameterType.FootrestDiameterD2)}, " +
+                $"H={parameters.GetValue(ParameterType.StoolHeightH)}, " +
+                $"H1={parameters.GetValue(
+                    ParameterType.FootrestHeightH1)}, " +
+                $"S={parameters.GetValue(ParameterType.SeatDepthS)}, " +
+                $"C={parameters.GetValue(ParameterType.LegCountC)}");
             streamWriter.WriteLine("Count\tTime\tRAM (GB)\tTotal RAM (GB)");
             streamWriter.Flush();
 
             Console.WriteLine($"Log file: {fileName}");
             Console.WriteLine("Count\tTime\t\tRAM (GB)\tTotal RAM (GB)");
-            Console.WriteLine("------------------------------------------------------");
+            Console.WriteLine("-------------------------------------------");
 
             try
             {
@@ -93,71 +96,96 @@ namespace BarstoolStressTesting
                         stopWatch.Start();
                         builder.Build(parameters);
                         stopWatch.Stop();
+
+                        var wrapperField = typeof(Builder).GetField(
+                            "_wrapper",
+                            System.Reflection.BindingFlags.NonPublic |
+                            System.Reflection.BindingFlags.Instance);
+                        if (wrapperField != null)
+                        {
+                            var wrapper = wrapperField.GetValue(
+                                builder) as Wrapper;
+                            wrapper?.CloseDocument();
+                        }
                     }
                     catch (Exception ex)
                     {
                         stopWatch.Stop();
-                        Console.WriteLine($"\nBuild {count} failed: {ex.GetType().Name}");
+                        Console.WriteLine($"\nBuild {count} failed:" +
+                            $" {ex.GetType().Name}");
 
                         if (ex is OutOfMemoryException)
                         {
                             Console.WriteLine("*** OUT OF MEMORY ***");
-                            streamWriter.WriteLine($"\nOUT OF MEMORY at build {count}: {ex.Message}");
+                            streamWriter.WriteLine($"\nOUT OF MEMORY at" +
+                                $" build {count}: {ex.Message}");
                             break;
                         }
                     }
 
-                    var usedMemory = currentProcess.PrivateMemorySize64 * gigabyteInByte;
-                    var totalPhysicalMemory = computerInfo.TotalPhysicalMemory * gigabyteInByte;
+                    var usedMemory = 
+                        currentProcess.PrivateMemorySize64 * gigabyteInByte;
+                    var totalPhysicalMemory = 
+                        computerInfo.TotalPhysicalMemory * gigabyteInByte;
                     var elapsedTime = stopWatch.Elapsed;
 
-                    // Запись в лог файл
                     streamWriter.WriteLine(
-                        $"{count}\t{elapsedTime:hh\\:mm\\:ss\\.fff}\t{usedMemory:F3}\t{totalPhysicalMemory:F3}");
+                        $"{count}\t{elapsedTime:hh\\:mm\\:ss\\.fff}" +
+                        $"\t{usedMemory:F3}\t{totalPhysicalMemory:F3}");
                     streamWriter.Flush();
 
-                    // Вывод в консоль каждые 10 итераций
                     if (count % 10 == 0 || count == 1)
                     {
                         var totalElapsed = DateTime.Now - startTime;
-                        Console.Write($"\r{count}\t{elapsedTime:hh\\:mm\\:ss\\.fff}\t{usedMemory:F3} GB\t{totalPhysicalMemory:F3} GB");
-                        Console.Write($" | Total: {totalElapsed:hh\\:mm\\:ss}");
+                        Console.Write($"\r{count}" +
+                            $"\t{elapsedTime:hh\\:mm\\:ss\\.fff}" +
+                            $"\t{usedMemory:F3} GB" +
+                            $"\t{totalPhysicalMemory:F3} GB");
+                        Console.Write(
+                            $" | Total: {totalElapsed:hh\\:mm\\:ss}");
                     }
 
                     stopWatch.Reset();
 
-                    // Уборка мусора каждые 100 итераций
                     if (count % 100 == 0)
                     {
                         GC.Collect();
                         GC.WaitForPendingFinalizers();
 
-                        // Обновляем информацию о памяти
                         computerInfo = new ComputerInfo();
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"\n\n*** CRITICAL ERROR: {ex.GetType().Name} ***");
-                streamWriter.WriteLine($"\nCRITICAL ERROR: {ex.GetType().Name} - {ex.Message}");
+                Console.WriteLine($"\n\n*** CRITICAL ERROR: " +
+                    $"{ex.GetType().Name} ***");
+                streamWriter.WriteLine($"\nCRITICAL ERROR: " +
+                    $"{ex.GetType().Name} - {ex.Message}");
             }
             finally
             {
                 var totalElapsed = DateTime.Now - startTime;
 
-                // Записываем итоги
                 streamWriter.WriteLine($"\nTest Finished: {DateTime.Now}");
                 streamWriter.WriteLine($"Total builds: {count}");
-                streamWriter.WriteLine($"Total time: {totalElapsed:hh\\:mm\\:ss}");
-                streamWriter.WriteLine($"Average time per build: {totalElapsed.TotalMilliseconds / count:F0} ms");
-                streamWriter.WriteLine($"Total physical memory: {computerInfo.TotalPhysicalMemory * gigabyteInByte:F3} GB");
+                streamWriter.WriteLine($"Total time: " +
+                    $"{totalElapsed:hh\\:mm\\:ss}");
+                streamWriter.WriteLine($"Average time per build: " +
+                    $"{totalElapsed.TotalMilliseconds / count:F0} ms");
+                streamWriter.WriteLine($"Total physical memory: " +
+                    $"{computerInfo.TotalPhysicalMemory *
+                    gigabyteInByte:F3} GB");
 
                 Console.WriteLine($"\n\n=== Test Results ===");
                 Console.WriteLine($"Total builds: {count}");
-                Console.WriteLine($"Total time: {totalElapsed:hh\\:mm\\:ss}");
-                Console.WriteLine($"Average time per build: {totalElapsed.TotalMilliseconds / count:F0} ms");
-                Console.WriteLine($"Total physical memory: {computerInfo.TotalPhysicalMemory * gigabyteInByte:F3} GB");
+                Console.WriteLine($"Total time: " +
+                    $"{totalElapsed:hh\\:mm\\:ss}");
+                Console.WriteLine($"Average time per build: " +
+                    $"{totalElapsed.TotalMilliseconds / count:F0} ms");
+                Console.WriteLine($"Total physical memory: " +
+                    $"{computerInfo.TotalPhysicalMemory *
+                    gigabyteInByte:F3} GB");
                 Console.WriteLine($"Results saved to: {fileName}");
                 Console.WriteLine("\nPress any key to exit...");
                 Console.ReadKey();

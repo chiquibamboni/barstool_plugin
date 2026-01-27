@@ -68,16 +68,17 @@ namespace BarstoolPluginCore.Model
                 if (value > _maxValue)
                 {
                     throw new ArgumentException(
-                        $"Минимальное значение ({value}) не может быть больше " +
-                        $"максимального значения ({_maxValue}).",
+                        $"Минимальное значение ({value}) не может быть " +
+                        $"больше максимального значения ({_maxValue}).",
                         nameof(value));
                 }
 
                 if (_value < value)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value),
-                        $"Текущее значение ({_value}) меньше нового минимального значения ({value}). " +
-                        $"Сначала установите значение в допустимый диапазон.");
+                        $"Текущее значение ({_value}) меньше нового " +
+                        $"минимального значения ({value}). Сначала " +
+                        $"установите значение в допустимый диапазон.");
                 }
 
                 _minValue = value;
@@ -96,16 +97,17 @@ namespace BarstoolPluginCore.Model
                 if (value < _minValue)
                 {
                     throw new ArgumentException(
-                        $"Максимальное значение ({value}) не может быть меньше " +
-                        $"минимального значения ({_minValue}).",
+                        $"Максимальное значение ({value}) не может быть " +
+                        $"меньше минимального значения ({_minValue}).",
                         nameof(value));
                 }
 
                 if (_value > value)
                 {
                     throw new InvalidOperationException(
-                        $"Текущее значение ({_value}) больше нового максимального значения ({value}). " +
-                        $"Сначала установите значение в допустимый диапазон.");
+                        $"Текущее значение ({_value}) больше нового " +
+                        $"максимального значения ({value}). Сначала " +
+                        $"установите значение в допустимый диапазон.");
                 }
 
                 _maxValue = value;

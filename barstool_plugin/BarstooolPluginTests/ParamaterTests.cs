@@ -34,7 +34,7 @@ namespace BarstoolPluginTests
         [Test]
         [Description("Value выбрасывает исключение при значении ниже" +
             " минимума")]
-        public void Value_SetBelowMin_ShouldThrowArgumentOutOfRangeException()
+        public void Value_BelowMin_ThrowsException()
         {
             var parameter = new Parameter(50, 10, 100);
             var expectedMessage = "Значение должно быть в " +
@@ -48,7 +48,7 @@ namespace BarstoolPluginTests
         [Test]
         [Description("Value выбрасывает исключение при значении" +
             " выше максимума")]
-        public void Value_SetAboveMax_ShouldThrowArgumentOutOfRangeException()
+        public void Value_BelowMax_ThrowsException()
         {
             var parameter = new Parameter(50, 10, 100);
             var expectedMessage = "Значение должно быть в" +
@@ -84,7 +84,8 @@ namespace BarstoolPluginTests
             " минимума")]
         public void Constructor_WithDefaultBelowMin_ShouldThrowException()
         {
-            var expectedMessage = "Значение должно быть в диапазоне [10, 100]";
+            var expectedMessage = "Значение должно быть в " +
+                "диапазоне [10, 100]";
 
             Assert.That(() => new Parameter(5, 10, 100),
                 Throws.InstanceOf<ArgumentOutOfRangeException>()
@@ -166,7 +167,7 @@ namespace BarstoolPluginTests
         [Test]
         [Description("Установка MinValue больше MaxValue выбрасывает" +
             " исключение")]
-        public void MinValue_SetGreaterThanMaxValue_ShouldThrowArgumentException()
+        public void MinAboveMax_ThrowsException()
         {
             var parameter = new Parameter(50, 10, 100);
 
@@ -200,7 +201,7 @@ namespace BarstoolPluginTests
         [Test]
         [Description("Установка MaxValue меньше MinValue выбрасывает" +
             " исключение")]
-        public void MaxValue_SetLessThanMinValue_ShouldThrowArgumentException()
+        public void MaxAboveMin_ThrowsException()
         {
             var parameter = new Parameter(50, 10, 100);
 

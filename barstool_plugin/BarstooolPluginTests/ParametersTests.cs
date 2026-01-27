@@ -342,7 +342,8 @@ namespace BarstoolPluginTests
             Assert.Multiple(() =>
             {
                 Assert.That(errorMessages, Does.Contain(expectedRangeError));
-                Assert.That(errorMessages, Does.Contain(expectedFormatError));
+                Assert.That(errorMessages,
+                    Does.Contain(expectedFormatError));
                 Assert.That(errorMessages, Does.Contain("\n"));
             });
         }
