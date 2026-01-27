@@ -70,7 +70,6 @@ namespace BarstoolPlugin.Services
             _kompas.ActivateControllerAPI();
         }
 
-
         /// <summary>
         /// Создаёт новый 3D-документ (деталь) и получает верхнюю деталь.
         /// </summary>
@@ -91,6 +90,20 @@ namespace BarstoolPlugin.Services
             _part = (ksPart)_doc3D.GetPart((short)Part_Type.pTop_Part)
                 ?? throw new InvalidOperationException(
                     "Не удалось получить верхнюю деталь.");
+        }
+
+        /// <summary>
+        /// Закрывает текущий открытый документ КОМПАС без сохранения
+        /// </summary>
+        public void CloseDocument()
+        {
+            if (_doc3D != null)
+            {
+                _doc3D.close();
+                _doc3D = null;
+                _part = null;
+                _current2dDoc = null;
+            }
         }
 
         /// <summary>
@@ -260,26 +273,6 @@ namespace BarstoolPlugin.Services
                 p.depthNormal = height;
             }
             extr.Create();
-        }
-
-        /// <summary>
-        /// Сохранение модели на диск.
-        /// </summary>
-        /// <param name="path">Полный путь к файлу для сохранения</param>
-        public void SaveAs(string path)
-        {
-            if (_doc3D == null)
-            {
-                throw new InvalidOperationException(
-                    "Документ не создан. Вызови CreateDocument3D().");
-            }
-
-            if (string.IsNullOrWhiteSpace(path))
-            {
-                throw new ArgumentException(
-                    "Путь к файлу не задан.", nameof(path));
-            }
-            _doc3D.SaveAs(path);
         }
 
         /// <summary>

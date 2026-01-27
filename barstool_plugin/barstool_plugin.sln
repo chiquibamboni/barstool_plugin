@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarstooolPluginTests", "Bar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarstoolPlugin", "BarstoolPlugin\BarstoolPlugin.csproj", "{617FA5E6-8FB4-49CD-AFC0-434D1D79103F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StressTesting", "StressTesting\StressTesting.csproj", "{C617F72E-A681-4F62-9CC4-D6A7C10F8646}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{617FA5E6-8FB4-49CD-AFC0-434D1D79103F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{617FA5E6-8FB4-49CD-AFC0-434D1D79103F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{617FA5E6-8FB4-49CD-AFC0-434D1D79103F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C617F72E-A681-4F62-9CC4-D6A7C10F8646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C617F72E-A681-4F62-9CC4-D6A7C10F8646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C617F72E-A681-4F62-9CC4-D6A7C10F8646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C617F72E-A681-4F62-9CC4-D6A7C10F8646}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

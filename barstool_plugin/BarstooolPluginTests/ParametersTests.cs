@@ -10,8 +10,6 @@ namespace BarstoolPluginTests
     [Description("Тесты для класса Parameters")]
     public class ParametersTests
     {
-        #region Existing Tests
-
         [Test]
         [Description(
             "Конструктор должен инициализировать значения по умолчанию")]
@@ -382,10 +380,6 @@ namespace BarstoolPluginTests
             });
         }
 
-        #endregion
-
-        #region Added Tests for 100% Coverage
-
         [Test]
         [Description(
             "ValidateDependencies должен находить ошибку пересечения ножек")]
@@ -484,7 +478,5 @@ namespace BarstoolPluginTests
                 Assert.That(errorMessage, Does.Not.Contain(":"));
             });
         }
-
-        #endregion
     }
 }

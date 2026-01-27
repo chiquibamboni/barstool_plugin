@@ -237,8 +237,7 @@ namespace BarstoolPluginCore.Model
             }
 
             double legPlacementRadius = (D / 2.0) - S - (d1 / 2.0);
-            if (legPlacementRadius <= 0 ||
-                d1 > 2 * legPlacementRadius * Math.Sin(Math.PI / C))
+            if (d1 > 2 * legPlacementRadius * Math.Sin(Math.PI / C))
             {
                 var affectedParams = new List<ParameterType>
                 {

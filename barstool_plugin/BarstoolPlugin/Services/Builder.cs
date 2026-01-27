@@ -64,7 +64,6 @@ namespace BarstoolPlugin.Services
             var directory = GetModelsDirectory();
             var filePath = Path.Combine(directory,
                 CreateFileName(parameters));
-            _wrapper.SaveAs(filePath);
         }
 
         /// <summary>

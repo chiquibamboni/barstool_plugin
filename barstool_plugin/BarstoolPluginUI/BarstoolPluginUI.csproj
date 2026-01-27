@@ -57,8 +57,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BarstoolPluginCore\BarstoolPluginCore.csproj" />
     <ProjectReference Include="..\BarstoolPlugin\BarstoolPlugin.csproj" />
+    <ProjectReference Include="..\StressTesting\StressTesting.csproj" />
   </ItemGroup>
 
   <ItemGroup>
