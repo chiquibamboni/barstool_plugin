@@ -96,17 +96,7 @@ namespace BarstoolStressTesting
                         stopWatch.Start();
                         builder.Build(parameters);
                         stopWatch.Stop();
-
-                        var wrapperField = typeof(Builder).GetField(
-                            "_wrapper",
-                            System.Reflection.BindingFlags.NonPublic |
-                            System.Reflection.BindingFlags.Instance);
-                        if (wrapperField != null)
-                        {
-                            var wrapper = wrapperField.GetValue(
-                                builder) as Wrapper;
-                            wrapper?.CloseDocument();
-                        }
+                        builder.CloseDocument();
                     }
                     catch (Exception ex)
                     {

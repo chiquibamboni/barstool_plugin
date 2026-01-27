@@ -60,10 +60,6 @@ namespace BarstoolPlugin.Services
             BuildLegs(legDiameter, legHeight, distanceFromCenter, legCount);
             BuildFootrest(footrestDiameter, footrestHeightUp,
                 distanceFromCenter);
-
-            var directory = GetModelsDirectory();
-            var filePath = Path.Combine(directory,
-                CreateFileName(parameters));
         }
 
         /// <summary>
@@ -156,40 +152,11 @@ namespace BarstoolPlugin.Services
         }
 
         /// <summary>
-        /// Формирует уникальное имя файла по параметрам и времени.
+        /// Закрывает текущий документ без сохранения.
         /// </summary>
-        /// <param name="p">Объект Parameters для получения значений
-        /// параметров</param>
-        private static string CreateFileName(Parameters p)
-        {
-            string format = "Barstool_D{0:0}_D1{1:0}_D2{2:0}_H{3:0}_"
-                + "H1{4:0}_S{5:0}_C{6:0}_{7:yyyyMMdd_HHmmss_fff}.m3d";
-
-            return string.Format(
-                CultureInfo.InvariantCulture,
-                format,
-                p.GetValue(ParameterType.SeatDiameterD),
-                p.GetValue(ParameterType.LegDiameterD1),
-                p.GetValue(ParameterType.FootrestDiameterD2),
-                p.GetValue(ParameterType.StoolHeightH),
-                p.GetValue(ParameterType.FootrestHeightH1),
-                p.GetValue(ParameterType.SeatDepthS),
-                p.GetValue(ParameterType.LegCountC),
-                DateTime.Now);
-        }
-
-        /// <summary>
-        /// Возвращает путь к директории для сохранения 3d-документа.
-        /// </summary>
-        private static string GetModelsDirectory()
-        {
-            var documents = Environment.GetFolderPath(
-                Environment.SpecialFolder.MyDocuments);
-            var directory = Path.Combine(
-                documents, "BarstoolPlugin", "Models");
-
-            Directory.CreateDirectory(directory);
-            return directory;
+        public void CloseDocument()
+        { 
+            _wrapper.CloseActiveDocument(); 
         }
     }
 }

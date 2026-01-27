@@ -95,11 +95,24 @@ namespace BarstoolPlugin.Services
         /// <summary>
         /// Закрывает текущий открытый документ КОМПАС без сохранения
         /// </summary>
-        public void CloseDocument()
+        public void CloseActiveDocument()
         {
-            if (_doc3D != null)
+            if (_doc3D == null)
+            { 
+                return;
+            }
+
+            try
             {
                 _doc3D.close();
+            }
+            catch
+            {
+                throw new ArgumentException(
+                    "Ошибка при закрытии документа");
+            }
+            finally
+            {
                 _doc3D = null;
                 _part = null;
                 _current2dDoc = null;
