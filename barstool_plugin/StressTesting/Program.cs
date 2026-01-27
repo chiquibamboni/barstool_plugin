@@ -1,9 +1,10 @@
-﻿﻿using System;
+﻿using BarstoolPlugin.Services;
+using BarstoolPluginCore.Model;
+using Microsoft.VisualBasic.Devices;
+﻿using System;
+using System.CodeDom.Compiler;
 using System.Diagnostics;
 using System.IO;
-using Microsoft.VisualBasic.Devices;
-using BarstoolPluginCore.Model;
-using BarstoolPlugin.Services;
 
 namespace BarstoolStressTesting
 {
@@ -56,8 +57,7 @@ namespace BarstoolStressTesting
         {
             var builder = new Builder();
             var stopWatch = new Stopwatch();
-            var computerInfo = new ComputerInfo();
-            Process currentProcess = Process.GetCurrentProcess();
+            System.Diagnostics.Process.GetCurrentProcess();
 
             const double gigabyteInByte = 0.000000000931322574615478515625;
             var count = 0;
@@ -78,12 +78,13 @@ namespace BarstoolStressTesting
                     ParameterType.FootrestHeightH1)}, " +
                 $"S={parameters.GetValue(ParameterType.SeatDepthS)}, " +
                 $"C={parameters.GetValue(ParameterType.LegCountC)}");
-            streamWriter.WriteLine("Count\tTime\tRAM (GB)\tTotal RAM (GB)");
+            streamWriter.WriteLine("Count\tTime\tRAM (GB)");
             streamWriter.Flush();
 
             Console.WriteLine($"Log file: {fileName}");
             Console.WriteLine("Count\tTime\t\tRAM (GB)\tTotal RAM (GB)");
-            Console.WriteLine("-------------------------------------------");
+            Console.WriteLine("-----------------------------------------" +
+                "---------------");
 
             try
             {
@@ -107,44 +108,34 @@ namespace BarstoolStressTesting
                         if (ex is OutOfMemoryException)
                         {
                             Console.WriteLine("*** OUT OF MEMORY ***");
-                            streamWriter.WriteLine($"\nOUT OF MEMORY at" +
-                                $" build {count}: {ex.Message}");
+                            streamWriter.WriteLine($"\nOUT OF MEMORY at " +
+                                $"build {count}: {ex.Message}");
                             break;
                         }
                     }
 
-                    var usedMemory = 
-                        currentProcess.PrivateMemorySize64 * gigabyteInByte;
+                    var computerInfo = new ComputerInfo();
+                    var usedMemory = (computerInfo.TotalPhysicalMemory
+                    - computerInfo.AvailablePhysicalMemory) * gigabyteInByte;
                     var totalPhysicalMemory = 
                         computerInfo.TotalPhysicalMemory * gigabyteInByte;
                     var elapsedTime = stopWatch.Elapsed;
 
+                    // Запись в лог файл
                     streamWriter.WriteLine(
                         $"{count}\t{elapsedTime:hh\\:mm\\:ss\\.fff}" +
-                        $"\t{usedMemory:F3}\t{totalPhysicalMemory:F3}");
+                        $"\t{usedMemory:F3}");
                     streamWriter.Flush();
 
-                    if (count % 10 == 0 || count == 1)
-                    {
-                        var totalElapsed = DateTime.Now - startTime;
-                        Console.Write($"\r{count}" +
-                            $"\t{elapsedTime:hh\\:mm\\:ss\\.fff}" +
-                            $"\t{usedMemory:F3} GB" +
-                            $"\t{totalPhysicalMemory:F3} GB");
-                        Console.Write(
-                            $" | Total: {totalElapsed:hh\\:mm\\:ss}");
-                    }
+                    var totalElapsed = DateTime.Now - startTime;
+                    Console.WriteLine($"{count}" +
+                        $"\t{elapsedTime:hh\\:mm\\:ss\\.fff}" +
+                        $"\t{usedMemory:F3}\t\t{totalPhysicalMemory:F3} " +
+                        $"| Total: {totalElapsed:hh\\:mm\\:ss}");
 
                     stopWatch.Reset();
-
-                    if (count % 100 == 0)
-                    {
-                        GC.Collect();
-                        GC.WaitForPendingFinalizers();
-
-                        computerInfo = new ComputerInfo();
-                    }
                 }
+
             }
             catch (Exception ex)
             {
@@ -163,9 +154,7 @@ namespace BarstoolStressTesting
                     $"{totalElapsed:hh\\:mm\\:ss}");
                 streamWriter.WriteLine($"Average time per build: " +
                     $"{totalElapsed.TotalMilliseconds / count:F0} ms");
-                streamWriter.WriteLine($"Total physical memory: " +
-                    $"{computerInfo.TotalPhysicalMemory *
-                    gigabyteInByte:F3} GB");
+                
 
                 Console.WriteLine($"\n\n=== Test Results ===");
                 Console.WriteLine($"Total builds: {count}");
@@ -173,9 +162,6 @@ namespace BarstoolStressTesting
                     $"{totalElapsed:hh\\:mm\\:ss}");
                 Console.WriteLine($"Average time per build: " +
                     $"{totalElapsed.TotalMilliseconds / count:F0} ms");
-                Console.WriteLine($"Total physical memory: " +
-                    $"{computerInfo.TotalPhysicalMemory *
-                    gigabyteInByte:F3} GB");
                 Console.WriteLine($"Results saved to: {fileName}");
                 Console.WriteLine("\nPress any key to exit...");
                 Console.ReadKey();
