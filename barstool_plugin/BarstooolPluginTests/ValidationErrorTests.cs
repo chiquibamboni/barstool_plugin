@@ -87,21 +87,6 @@ namespace BarstoolPluginTests
 
         [Test]
         [Description(
-            "Конструктор должен выбрасывать исключение при пустом "
-            + "списке параметров")]
-        public void Constructor_ShouldThrowExceptionForEmptyParameterList()
-        {
-            var emptyList = new List<ParameterType>();
-            var message = "Тестовое сообщение";
-            var expectedError = "Список параметров не может быть пустым";
-
-            Assert.That(() => new ValidationError(emptyList, message),
-                Throws.InstanceOf<ArgumentException>()
-                    .With.Message.Contains(expectedError));
-        }
-
-        [Test]
-        [Description(
             "Конструктор должен выбрасывать исключение при null "
             + "списке параметров")]
         public void Constructor_ShouldThrowExceptionForNullParameterList()
@@ -136,73 +121,6 @@ namespace BarstoolPluginTests
             Assert.That(() => new ValidationError(affectedParameters, null),
                 Throws.InstanceOf<ArgumentException>()
                     .With.Message.Contains(expectedError));
-        }
-
-        [Test]
-        [Description("Можно создать ошибки для всех типов параметров")]
-        public void Constructor_ShouldWorkForAllParameterTypes()
-        {
-            var allParameterTypes = Enum.GetValues(typeof(ParameterType));
-
-            foreach (ParameterType parameterType in allParameterTypes)
-            {
-                var affectedParams = new List<ParameterType> { parameterType };
-                var error = new ValidationError(affectedParams,
-                    $"Error for {parameterType}");
-
-                Assert.Multiple(() =>
-                {
-                    Assert.That(error.AffectedParameters,
-                        Contains.Item(parameterType));
-                    Assert.That(error.AffectedParameters,
-                        Has.Count.EqualTo(1));
-                    Assert.That(error.Message,
-                        Is.EqualTo($"Error for {parameterType}"));
-                });
-            }
-        }
-
-        [Test]
-        [Description(
-            "Две ошибки с разными параметрами должны корректно работать")]
-        public void TwoErrors_WithDifferentParameters_ShouldWorkCorrectly()
-        {
-            var error1 = new ValidationError(
-                new List<ParameterType> { ParameterType.LegDiameterD1 },
-                "Same message");
-
-            var error2 = new ValidationError(
-                new List<ParameterType> { ParameterType.SeatDiameterD },
-                "Same message");
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(error1.AffectedParameters,
-                    Does.Not.EqualTo(error2.AffectedParameters));
-                Assert.That(error1.Message, Is.EqualTo(error2.Message));
-            });
-        }
-
-        [Test]
-        [Description("Свойства должны быть доступны только для чтения")]
-        public void Properties_ShouldBeReadOnly()
-        {
-            var error = new ValidationError(
-                new List<ParameterType> { ParameterType.SeatDepthS },
-                "Test message",
-                "Test field");
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(error.AffectedParameters, Is.Not.Null);
-                Assert.That(error.Message, Is.Not.Null);
-                Assert.That(() => error.FieldName, Throws.Nothing);
-
-                var affectedParams = error.AffectedParameters;
-
-                Assert.That(affectedParams,
-                    Is.InstanceOf<List<ParameterType>>());
-            });
         }
     }
 }

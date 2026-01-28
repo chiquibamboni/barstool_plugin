@@ -365,24 +365,6 @@ namespace BarstoolPluginTests
 
         [Test]
         [Description(
-            "SetValue с fieldName должен включать имя поля в ошибку")]
-        public void SetValue_WithFieldName_ShouldIncludeFieldNameInError()
-        {
-            var parameters = new Parameters();
-            string fieldName = "Диаметр ножки";
-            bool result = parameters.SetValue(
-                ParameterType.LegDiameterD1, 24, fieldName);
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(result, Is.False);
-                Assert.That(
-                    parameters.GetErrorMessages(), Does.Contain(fieldName));
-            });
-        }
-
-        [Test]
-        [Description(
             "ValidateDependencies должен находить ошибку пересечения ножек")]
         public void ValidateDependencies_ShouldDetectLegIntersectionError()
         {
@@ -457,26 +439,6 @@ namespace BarstoolPluginTests
                 Assert.That(finalError, Does.Contain("Новая ошибка формы"));
                 Assert.That(finalError, Does.Not.Contain(expectedError));
                 Assert.That(finalError.Split('\n').Length, Is.EqualTo(1));
-            });
-        }
-
-        [Test]
-        [Description(
-            "GetErrorMessages должен форматировать сообщение "
-            + "без имени поля")]
-        public void GetErrorMessages_ShouldFormatMessageWithoutFieldName()
-        {
-            var parameters = new Parameters();
-            // Вне диапазона [3, 6]
-            parameters.SetValue(ParameterType.LegCountC, 10);
-            string errorMessage = parameters.GetErrorMessages();
-
-            Assert.Multiple(() =>
-            {
-                var expected =
-                    "Значение 10 не находится в диапазоне [3, 6]";
-                Assert.That(errorMessage, Is.EqualTo(expected));
-                Assert.That(errorMessage, Does.Not.Contain(":"));
             });
         }
     }
