@@ -95,7 +95,6 @@ namespace BarstoolPluginUI
             textBox.Text = defaultValue.ToString();
 
             limitLabel.Text = $"от {minValue} до {maxValue} " +
-             //TODO: refactor +
                 (paramType == ParameterType.LegCountC ? "шт" : "мм");
         }
 

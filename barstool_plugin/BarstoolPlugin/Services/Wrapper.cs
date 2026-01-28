@@ -53,7 +53,6 @@ namespace BarstoolPlugin.Services
                 }
             }
 
-            //TODO: RSDN +
             var kompasType = Type.GetTypeFromProgID("KOMPAS.Application.5");
             if (kompasType == null)
             {
@@ -383,7 +382,6 @@ namespace BarstoolPlugin.Services
             }
             catch(Exception ex)
             {
-                //TODO: ?? +
                 MessageBox.Show(
                     $"Ошибка при освобождении COM-объекта: {ex.Message}",
                     "Ошибка освобождения ресурсов",

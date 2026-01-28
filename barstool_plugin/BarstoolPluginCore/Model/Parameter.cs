@@ -62,7 +62,6 @@ namespace BarstoolPluginCore.Model
         public int MinValue
         {
             get => _minValue;
-            //TODO: validation +
             set
             {
                 if (value > _maxValue)
